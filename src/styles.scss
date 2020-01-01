@@ -1,6 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
 $fa-font-path: "~font-awesome/fonts";
 @import "~font-awesome/scss/font-awesome";
+@import url('https://fonts.googleapis.com/css?family=IBM+Plex+Serif:400,500,600,700&display=swap&subset=vietnamese');
+
 
 /* Medium content styling */
 .write-blog-form .form-container .lh-section-content {
@@ -69,12 +71,12 @@ $fa-font-path: "~font-awesome/fonts";
 }
 .medium-editor-insert-plugin .medium-insert-buttons button[data-addon="images"] svg {
     position: relative;
-    top: -2px;
+    top: 2px;
 }
 .medium-editor-insert-plugin .medium-insert-buttons button[data-addon="embeds"] svg {
     position: relative;
     left: 2px;
-    top: -1px;
+    top: 2px;
 }
 .medium-editor-insert-plugin .medium-insert-buttons button[data-addon="quote"] svg {
     position: relative;
