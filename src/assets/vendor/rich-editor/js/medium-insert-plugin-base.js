@@ -1,65 +1,65 @@
 //start editor
-var editor = new MediumEditor('#linkhay-editor', {
-  toolbar: {
-    buttons: [
-      {
-        name: 'bold',
-        contentDefault: "<i class='fa fa-bold'></i>"
-      },
-      {
-        name: 'italic',
-        contentDefault: "<i class='fa fa-italic'></i>"
-      },
-      {
-        name: 'underline',
-        contentDefault: "<i class='fa fa-underline'></i>"
-      },
-      {
-        name: 'anchor',
-        contentDefault: "<i class='fa fa-link'></i>"
-      },
-      {
-        name: 'justifyLeft',
-        contentDefault: "<i class='fa fa-align-left'></i>"
-      },
-      {
-        name: 'justifyCenter',
-        contentDefault: "<i class='fa fa-align-center'></i>"
-      },
-      {
-        name: 'justifyRight',
-        contentDefault: "<i class='fa fa-align-right'></i>"
-      },
-      {
-        name: 'h2',
-        contentDefault: "<svg width='15' height='16' viewBox='0 0 15 16' fill='none' xmlns='http://www.w3.org/2000/svg'>\
-        <path d='M3.982 14.68H6.072V2.074H2.904V4.626H0.638V0.644H14.564V4.626H12.298V2.074H9.13V14.68H11.22V16H3.982V14.68Z' fill='currentColor'></path>\
-        </svg>"
-      },
-      {
-        name: 'h3',
-        contentDefault: "<svg width='11' height='12' viewBox='0 0 11 12' fill='none' xmlns='http://www.w3.org/2000/svg'>\
-        <path d='M2.896 11.04H4.416V1.872H2.112V3.728H0.464V0.832H10.592V3.728H8.944V1.872H6.64V11.04H8.16V12H2.896V11.04Z' fill='currentColor'></path>\
-        </svg>"
-      },
-      {
-        name:'unorderedlist',
-        contentDefault: "<i class='fa fa-list-ul'></i>"
-      },
-      {
-        name: 'quote',
-        contentDefault: "<i class='fa fa-quote-right'></i>"
-      },
-      {
-        name: 'removeFormat',
-        contentDefault: "<i class='fa fa-eraser'></i>"
-      }
-  ]
-  },
-})
+  var editor = new MediumEditor('.editable', {
+    toolbar: {
+      buttons: [
+        {
+          name: 'bold',
+          contentDefault: "<i class='fa fa-bold'></i>"
+        },
+        {
+          name: 'italic',
+          contentDefault: "<i class='fa fa-italic'></i>"
+        },
+        {
+          name: 'underline',
+          contentDefault: "<i class='fa fa-underline'></i>"
+        },
+        {
+          name: 'anchor',
+          contentDefault: "<i class='fa fa-link'></i>"
+        },
+        {
+          name: 'justifyLeft',
+          contentDefault: "<i class='fa fa-align-left'></i>"
+        },
+        {
+          name: 'justifyCenter',
+          contentDefault: "<i class='fa fa-align-center'></i>"
+        },
+        {
+          name: 'justifyRight',
+          contentDefault: "<i class='fa fa-align-right'></i>"
+        },
+        {
+          name: 'h2',
+          contentDefault: "<svg width='15' height='16' viewBox='0 0 15 16' fill='none' xmlns='http://www.w3.org/2000/svg'>\
+          <path d='M3.982 14.68H6.072V2.074H2.904V4.626H0.638V0.644H14.564V4.626H12.298V2.074H9.13V14.68H11.22V16H3.982V14.68Z' fill='currentColor'></path>\
+          </svg>"
+        },
+        {
+          name: 'h3',
+          contentDefault: "<svg width='11' height='12' viewBox='0 0 11 12' fill='none' xmlns='http://www.w3.org/2000/svg'>\
+          <path d='M2.896 11.04H4.416V1.872H2.112V3.728H0.464V0.832H10.592V3.728H8.944V1.872H6.64V11.04H8.16V12H2.896V11.04Z' fill='currentColor'></path>\
+          </svg>"
+        },
+        {
+          name:'unorderedlist',
+          contentDefault: "<i class='fa fa-list-ul'></i>"
+        },
+        {
+          name: 'quote',
+          contentDefault: "<i class='fa fa-quote-right'></i>"
+        },
+        {
+          name: 'removeFormat',
+          contentDefault: "<i class='fa fa-eraser'></i>"
+        }
+    ]
+    }
+  });
 
-
-$("#linkhay-editor").mediumInsert({
+$(function() {
+  $(".editable").mediumInsert({
     editor: editor,
     addons: {
       images: {
@@ -123,7 +123,6 @@ $("#linkhay-editor").mediumInsert({
           }
         },
       },
-      //for embeded documents
       embeds: {
         label: "<svg width='13' height='14' viewBox='0 0 13 14' fill='none' xmlns='http://www.w3.org/2000/svg'>\
         <path d='M1.1875 0.4375L11.6875 7L1.1875 13.5625V0.4375Z' stroke='#333333' stroke-miterlimit='10' stroke-linecap='round' stroke-linejoin='round'></path>\
@@ -156,6 +155,9 @@ $("#linkhay-editor").mediumInsert({
                       <path d='M17.45 12H14.3c-.247 0-.45.224-.45.5 0 .274.203.5.45.5h5.4c.248 0 .45-.226.45-.5 0-.276-.202-.5-.45-.5h-2.25z'></path>\
                   </g>\
                 </svg>"
-      }
+      },
+      highlight: {}
     }
 })
+})
+
