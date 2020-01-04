@@ -1,6 +1,44 @@
+const editTemplate = "<div class='medium-insert-customQuote-toolbar medium-editor-toolbar medium-toolbar-arrow-under medium-editor-toolbar-active'>\
+                                    <ul class='medium-editor-toolbar-actions clearfix'>\
+                                        <li>\
+                                            <button class='medium-editor-action medium-editor-button-active' data-action='edit'>Edit</button>\
+                                        </li>\
+                                    </ul>\
+                                  </div>"
+const removeButton = "<div class='medium-insert-customQuote-toolbar2 medium-editor-toolbar medium-editor-toolbar-active'>\
+                        <ul class='medium-editor-toolbar-actions clearfix'>\
+                        <li>\
+                            <button class='medium-editor-action' data-action='remove'><svg width='38' height='38' viewBox='0 0 38 38' fill='none' xmlns='http://www.w3.org/2000/svg'>\
+                        <g opacity='0.5'>\
+                        <g filter='url(#filter0_d)'>\
+                        <circle cx='19' cy='17' r='17' fill='black'></circle>\
+                        <circle cx='19' cy='17' r='16.25' stroke='white' stroke-width='1.5'></circle>\
+                        </g>\
+                        <path d='M18.125 16H16.375V22H18.125V16Z' fill='white'></path>\
+                        <path d='M21.625 16H19.875V22H21.625V16Z' fill='white'></path>\
+                        <path d='M22.5 10C22.5 9.4 22.15 9 21.625 9H16.375C15.85 9 15.5 9.4 15.5 10V12H12V14H12.875V24C12.875 24.6 13.225 25 13.75 25H24.25C24.775 25 25.125 24.6 25.125 24V14H26V12H22.5V10ZM17.25 11H20.75V12H17.25V11ZM23.375 14V23H14.625V14H23.375Z' fill='white'></path>\
+                        </g>\
+                        <defs>\
+                        <filter id='filter0_d' x='0' y='0' width='38' height='38' filterUnits='userSpaceOnUse' color-interpolation-filters='sRGB'>\
+                        <feFlood flood-opacity='0' result='BackgroundImageFix'></feFlood>\
+                        <feColorMatrix in='SourceAlpha' type='matrix' values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0'></feColorMatrix>\
+                        <feOffset dy='2'></feOffset>\
+                        <feGaussianBlur stdDeviation='1'></feGaussianBlur>\
+                        <feColorMatrix type='matrix' values='0 0 0 0 0.375 0 0 0 0 0.375 0 0 0 0 0.375 0 0 0 0.15 0'></feColorMatrix>\
+                        <feBlend mode='normal' in2='BackgroundImageFix' result='effect1_dropShadow'></feBlend>\
+                        <feBlend mode='normal' in='SourceGraphic' in2='effect1_dropShadow' result='shape'></feBlend>\
+                        </filter>\
+                        </defs>\
+                        </svg>\
+                        </button>\
+                        </li>\
+                      </ul></div>";
+
+
 /** insert CustomQuote **/
 ;(function ($, window, document, undefined) {
   'use strict';
+
 
   /** Default values */
   var instance = null,
@@ -27,7 +65,9 @@
                           elementLink = selectedElement.find('.link-site a').attr('href'),
                           elementTemplate = selectedElement.find('.lh-quote-card').data('template');
 
+                      $("#lhCustomQuote").find('.titlebar').text('Sửa quote');
                       instance.selectedElement = selectedElement;
+
                       instance.add(true, [elementContent,elementImage,elementBrandName,elementLink,elementTemplate]);
                   }
               }
@@ -105,9 +145,9 @@
   CustomAddon.prototype.selectcustomQuote = function (e) {
       var t, i = this,
           t = $(e.target);
-      if (t.hasClass('medium-insert-customQuote') == false) {
-          t = $(t).parents('.medium-insert-customQuote');
-      }
+          if (t.hasClass('medium-insert-customQuote') == false) {
+            t = $(t).parents('.medium-insert-customQuote');
+          }
 
       t.addClass('medium-insert-customQuote-selected'),
           setTimeout(function () {
@@ -138,10 +178,10 @@
           i = this.$el.find(".medium-insert-customQuote-selected").closest(".medium-insert-customQuote"),
           s = !1,
           o = this.core.getEditor().options.elementsContainer || "body";
-      $(o).append(this.templates["src/js/templates/customQuote-toolbar.hbs"]({
-          styles: options.styles,
-          actions: options.actions
-      }).trim());
+
+      $(o).append(editTemplate);
+      $(o).append(removeButton);
+
       e = $(".medium-insert-customQuote-toolbar"), t = $(".medium-insert-customQuote-toolbar2"), e.find("button").each(function () {
           i.hasClass("medium-insert-customQuote-" + $(this).data("action")) && ($(this).addClass("medium-editor-button-active"), s = !0)
       }), !1 === s && e.find("button").first().addClass("medium-editor-button-active"), this.repositionToolbars(), e.fadeIn(), t.fadeIn()
@@ -198,7 +238,7 @@
           .on("click", ".medium-insert-customQuote-toolbar .medium-editor-action", $.proxy(this, "toolbarAction"))
           .on("click", ".medium-insert-customQuote-toolbar2 .medium-editor-action", $.proxy(this, "toolbar2Action")),
           this.$el.on("click", ".medium-insert-customQuote .customQuoteContent", $.proxy(this, "selectcustomQuote")),
-          $(document).on("resize", $.proxy(this, "autoRepositionToolbars"));
+          $(window).on("resize", $.proxy(this, "autoRepositionToolbars"));
   };
 
   /**
@@ -621,7 +661,7 @@
           if(self.edit == true) {
               self._wrap.find(".imageSubmitBox button").text('Update');
               self.textarea.css({'height':self.textarea[0].scrollHeight + 'px'});
-              self._listenerUploaderHasFile(true);
+              // self._listenerUploaderHasFile(true);
               self._wrap.find('#customQuoteEditorUpload').addClass('hasImage');
           }
       };

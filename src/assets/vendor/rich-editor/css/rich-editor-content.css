@@ -360,7 +360,8 @@
 .medium-insert-album-toolbar2,
 .medium-insert-imageDescription-toolbar2,
 .medium-insert-embeds-toolbar2,
-.medium-insert-customQuote-toolbar2{
+.medium-insert-customQuote-toolbar2,
+.medium-insert-highlight-toolbar2 {
     background: none !important;
     border: none !important;
     box-shadow: none !important;

@@ -51,5 +51,6 @@ export class MediumComponent implements OnInit, AfterViewInit {
 
   publish() {
     //get content:
+    console.log($('editable').html())
   }
 }
