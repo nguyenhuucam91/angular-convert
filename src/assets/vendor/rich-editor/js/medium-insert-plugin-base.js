@@ -86,6 +86,9 @@ var editor = new MediumEditor('.editable', {
       cleanTags: []
   },
   spellcheck: false,
+  extensions: {
+    'imageDragging': {}
+  }
 });
 
 $(function() {
@@ -100,8 +103,10 @@ $(function() {
         </svg>",
         fileUploadOptions: {
             // url: linkhay_url + `/user/media/upload?is_editor=true&name=${postKey}`, //Change name to match blog_post_key at line 4
-            // type: 'post',
-            // acceptFileTypes: /(.|\/)(gif|jpe?g|png)$/i
+            // url: 'https://www.googleapis.com/upload/drive/v3/files?uploadType=media',
+            url: 'http://react-backend.test/api/upload',
+            type: 'post',
+            acceptFileTypes: /(.|\/)(gif|jpe?g|png)$/i
         },
         uploadCompleted: function($el, data) {
             if (!data.result || typeof data.result.files[0].url != 'string') {
@@ -155,7 +160,15 @@ $(function() {
           }
         }
       },
-      customQuote: {},
+      customQuote: {
+        fileUploadOptions: {
+          // url: linkhay_url + `/user/media/upload?is_editor=true&name=${postKey}`, //Change name to match blog_post_key at line 4
+          // url: 'https://www.googleapis.com/upload/drive/v3/files?uploadType=media',
+          url: 'http://react-backend.test/api/upload',
+          type: 'post',
+          acceptFileTypes: /(.|\/)(gif|jpe?g|png)$/i
+        },
+      },
       highLight: {
         actions: {
           'remove': {

@@ -65,7 +65,6 @@ const removeButton = "<div class='medium-insert-customQuote-toolbar2 medium-edit
                           elementLink = selectedElement.find('.link-site a').attr('href'),
                           elementTemplate = selectedElement.find('.lh-quote-card').data('template');
 
-                      $("#lhCustomQuote").find('.titlebar').text('Sửa quote');
                       instance.selectedElement = selectedElement;
 
                       instance.add(true, [elementContent,elementImage,elementBrandName,elementLink,elementTemplate]);
@@ -220,6 +219,10 @@ const removeButton = "<div class='medium-insert-customQuote-toolbar2 medium-edit
       i && i(this.$el.find(".medium-insert-customQuote-selected")), this.core.triggerInput(), this.repositionToolbars()
   },
 
+  /**
+   * Toolbar2 actions
+   * @param {*} e
+   */
   CustomAddon.prototype.toolbar2Action = function (e) {
       var t = $(e.target).is("button") ? $(e.target) : $(e.target).closest("button"),
           i = (options.actions[t.data("action")] || {}).clicked;
@@ -542,31 +545,116 @@ const removeButton = "<div class='medium-insert-customQuote-toolbar2 medium-edit
           return '<div class="medium-insert-customQuote" contenteditable="false"><div class="customQuoteContent">'+_html+'</div></div>';
       };
 
+      /**
+       * Prepare upload process when user click on upload custom quote image
+       */
       this._setupUploader = function(selector) {
-          _el.data('plugin_mediumInsertImages').add({
-              dataType: "json",
-              add: function(e, t) {
-                  t.submit();
+          var that = this,
+          $file = $(this.templates['src/js/templates/images-fileupload.hbs']()),
+          fileUploadOptions = {
+              dataType: 'json',
+              add: function (e, data) {
+                  $.proxy(that, 'uploadAdd', e, data)();
               },
-              progress: function(e, t) {
-                  //console.log('process');
-              },
-              progressall: function(e, t) {
-                  //console.log('progressall');
-              },
-              done: function(e, t) {
-                  var imageUrl = t.result.files[0].url,
-                      imageId = t.result.files[0].media_id,
-                      _img_class = (t.result.files[0].height < t.result.files[0].width)?'scaleByHeight':'scaleByWidth',
-                      img = $('<img/>').attr({'src': imageUrl,'data-source':'lh-user-media', 'data-lh-media-id': imageId, 'data-w': t.result.files[0].width, 'data-h': t.result.files[0].height}).addClass(_img_class);
-                  var uploadBox = selector.closest('.iconBrandInsert');
-                  uploadBox.find('.brandIcon').html(img);
-                  selector.text('Edit');
-
+              done: function (e, data) {
+                  $.proxy(that, 'uploadDone', e, data, selector)();
               }
-          });
-      };
+          };
 
+        // Only add progress callbacks for browsers that support XHR2,
+        // and test for XHR2 per:
+        // http://stackoverflow.com/questions/6767887/
+        // what-is-the-best-way-to-check-for-xhr2-file-upload-support
+        if (new XMLHttpRequest().upload) {
+            fileUploadOptions.progress = function (e, data) {
+                $.proxy(that, 'uploadProgress', e, data)();
+            };
+
+            fileUploadOptions.progressall = function (e, data) {
+                $.proxy(that, 'uploadProgressall', e, data)();
+            };
+        }
+
+        $file.fileupload($.extend(true, {}, this.options.fileUploadOptions, fileUploadOptions));
+
+        $file.click();
+      }
+
+      /**
+       * Trigger when user choose file to begin uploading
+       */
+      CustomAddon.prototype.uploadAdd = function(e, data) {
+        data.process().done(function() {
+          data.submit();
+        })
+      }
+
+      /**
+       *  Trigger after user
+       */
+      CustomAddon.prototype.uploadDone = function(e, t, selector) {
+        var imageUrl = t.result.files[0].url,
+                    imageId = t.result.files[0].media_id,
+                    _img_class = (t.result.files[0].height < t.result.files[0].width)?'scaleByHeight':'scaleByWidth',
+                    img = $('<img/>').attr({'src': imageUrl,'data-source':'lh-user-media', 'data-lh-media-id': imageId, 'data-w': t.result.files[0].width, 'data-h': t.result.files[0].height}).addClass(_img_class);
+                var uploadBox = selector.closest('.iconBrandInsert');
+                uploadBox.find('.brandIcon').html(img);
+                selector.text('Edit');
+      }
+
+      /**
+     * Callback for global upload progress events
+     * https://github.com/blueimp/jQuery-File-Upload/wiki/Options#progressall
+     *
+     * @param {Event} e
+     * @param {object} data
+     * @return {void}
+     */
+
+    CustomAddon.prototype.uploadProgressall = function (e, data) {
+        var progress, $progressbar;
+
+        if (this.options.preview === false) {
+            progress = parseInt(data.loaded / data.total * 100, 10);
+            $progressbar = this.$el.find('.medium-insert-active').find('progress');
+
+            $progressbar
+                .attr('value', progress)
+                .text(progress);
+
+            if (progress === 100) {
+                $progressbar.remove();
+            }
+        }
+    };
+
+    /**
+     * Callback for upload progress events.
+     * https://github.com/blueimp/jQuery-File-Upload/wiki/Options#progress
+     *
+     * @param {Event} e
+     * @param {object} data
+     * @return {void}
+     */
+
+    CustomAddon.prototype.uploadProgress = function (e, data) {
+        var progress, $progressbar;
+
+        if (this.options.preview) {
+            progress = 100 - parseInt(data.loaded / data.total * 100, 10);
+            $progressbar = data.context.find('.medium-insert-images-progress');
+
+            $progressbar.css('width', progress + '%');
+
+            if (progress === 0) {
+                $progressbar.remove();
+            }
+        }
+    };
+
+      /**
+       * Reset scroll
+       */
       this._resetScroll = function () {
           $('body').removeClass('disabled-scroll');
       };

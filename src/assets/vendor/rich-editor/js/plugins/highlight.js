@@ -178,7 +178,6 @@ const removeHighlightButton = "<div class='medium-insert-highlight-toolbar2 medi
     * Autoreposition toolbar
     */
    CustomAddon.prototype.autoRepositionToolbars = function () {
-     console.log('123')
     setTimeout(function () {
         this.repositionToolbars(), this.repositionToolbars()
     }.bind(this), 0)
